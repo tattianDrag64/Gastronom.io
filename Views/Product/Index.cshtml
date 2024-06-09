@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ProductStore.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+<style>
+    .fixed-image {
+        width: 200px;
+        height: 200px;
+        object-fit: cover; 
+        display: block;
+        margin: 0 auto;
+    }
+
+    .card-no-border {
+        border: none;
+        box-shadow: none; 
+    }
+</style>
+
+<div class="container my-4">
+    <h1>Продукти</h1>
+
+    <form method="get" asp-action="Index" class="mb-4">
+        <input type="text" name="search" placeholder="Пошук продуктів..." />
+        <select name="category">
+            <option value="">Всі категорії</option>
+            <option value="Молочні продукти">Молочні продукти</option>
+            <option value="Напої">Напої</option>
+            <option value="Випічка">Випічка</option>
+            <option value="М'ясо та риба">М'ясо та риба</option>
+            <option value="Овочі та фрукти">Овочі та фрукти</option>
+        </select>
+        <button type="submit" class="btn btn-success">Пошук</button>
+    </form>
+
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card card-no-border">
+                    <img src="@product.ImageUrl" class="card-img-top fixed-image" alt="@product.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Price ГРН</p>
+                        <form method="post" asp-action="AddToCart" asp-route-id="@product.Id">
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" name="quantity" value="1" min="1" />
+                            </div>
+                            <button type="submit" class="btn btn-success">Додати до кошика</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

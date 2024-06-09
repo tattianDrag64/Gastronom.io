@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ProductStore.Models.CartItem>
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container">
+    <h1>Кошик покупок</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Продукт</th>
+                <th>Кількість</th>
+                <th>Ціна</th>
+                <th>Всього</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>
+                        <form method="post" asp-action="UpdateCart" asp-route-id="@item.Id">
+                            <input type="number" name="quantity" value="@item.Quantity" min="0" />
+                            <button type="submit" class="btn btn-success">Оновити</button>
+                        </form>
+                    </td>
+                    <td>@item.Price ГРН</td>
+                    <td>@(item.Price * item.Quantity) ГРН</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <strong>Всього: @Model.Sum(item => item.Price * item.Quantity) ГРН</strong>
+    </div>
+    <form method="post" asp-action="PlaceOrder">
+        <button type="submit" class="btn btn-success">Оформити замовлення</button>
+    </form>
+</div>
